@@ -12,6 +12,9 @@ jobs:
           unzip -q Lumen.zip
           printf 'android.useAndroidX=true\norg.gradle.jvmargs=-Xmx2g\n' > Lumen/gradle.properties
           sed -i '/android:icon=/d;/android:roundIcon=/d' Lumen/app/src/main/AndroidManifest.xml
+          for f in Browse Viewer; do
+            sed -i '1i @file:OptIn(androidx.compose.animation.ExperimentalSharedTransitionApi::class)' Lumen/app/src/main/java/com/lumen/gallery/$f.kt
+          done
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -25,3 +28,4 @@ jobs:
         with:
           name: Lumen-apk
           path: Lumen/app/build/outputs/apk/debug/app-debug.apk
+        
